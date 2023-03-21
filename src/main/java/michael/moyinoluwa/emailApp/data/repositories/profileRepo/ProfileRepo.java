@@ -7,15 +7,16 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 
 public interface ProfileRepo extends MongoRepository <Profile, String> {
-    default Profile findByUsername(String username) {
-        for (Profile profile : findAll()) if (profile.getUsername().equalsIgnoreCase(username)) return profile;
-        return null;
-    }
+//    default Profile findByUsername(String username) {
+//        for (Profile profile : findAll()) if (profile.getUsername().equalsIgnoreCase(username)) return profile;
+//        return null;
+//    }
+    Profile findByUsername(String username);
 
     default void editUsername(String oldUsername, String newUsername) {
-        Profile profile = findByUsername(oldUsername);
-        profile.setUsername(newUsername);
-        save(profile);
+        Profile optionalProfile = findByUsername(oldUsername);
+        optionalProfile.setUsername(newUsername);
+        save(optionalProfile);
     }
 
     default void editPassword(String id, String newPassword){
@@ -23,4 +24,6 @@ public interface ProfileRepo extends MongoRepository <Profile, String> {
         profile.setPassword(newPassword);
         save(profile);
     }
+
+    boolean existsByUsername(String username);
 }

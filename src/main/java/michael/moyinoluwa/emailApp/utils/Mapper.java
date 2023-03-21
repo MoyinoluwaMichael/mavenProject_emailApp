@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Mapper {
     public static Profile map(RegisterRequest request) {
-        Profile profile = new Profile();
+        Profile profile = new Profile("mikee");
         profile.setTimeCreated(LocalDateTime.now());
         profile.setFirstName(convertToSentenceCase(request.getFirstName()));
         profile.setLastName(convertToSentenceCase(request.getLastName()));

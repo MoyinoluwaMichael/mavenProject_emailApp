@@ -1,12 +1,16 @@
 package michael.moyinoluwa.emailApp.data.models;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
 @Document("Mails")
 @Data
+@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Mail {
     @Id
     private String id;
@@ -16,5 +20,6 @@ public class Mail {
     private String sender;
     private String recipient;
     private LocalDateTime timeCreated;
-    private String type;
+    @NonNull
+    private MailType type;
 }

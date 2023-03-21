@@ -1,6 +1,7 @@
 package michael.moyinoluwa.emailApp.services.mailService.sentMailsService;
 
 import michael.moyinoluwa.emailApp.data.models.Mail;
+import michael.moyinoluwa.emailApp.data.models.MailType;
 import michael.moyinoluwa.emailApp.data.repositories.mailRepo.sentEmailsRepo.SentMailsRepo;
 import michael.moyinoluwa.emailApp.dtos.request.MailRequest;
 import michael.moyinoluwa.emailApp.dtos.response.MailResponse;
@@ -18,7 +19,7 @@ public class SentMailsServiceImpl implements SentMailsService {
 
     @Override
     public MailResponse save(MailRequest request) {
-        request.setType("SENT_MAILBOX");
+        request.setType(MailType.SENT_MAIL);
         return Mapper.map(sentMailsRepo.save(Mapper.map(request)));
     }
 

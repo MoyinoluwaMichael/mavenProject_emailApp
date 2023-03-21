@@ -1,6 +1,7 @@
 package michael.moyinoluwa.emailApp.services.mailService.inboxService;
 
 import michael.moyinoluwa.emailApp.data.models.Mail;
+import michael.moyinoluwa.emailApp.data.models.MailType;
 import michael.moyinoluwa.emailApp.data.repositories.mailRepo.inboxRepo.InboxRepo;
 import michael.moyinoluwa.emailApp.dtos.request.MailRequest;
 import michael.moyinoluwa.emailApp.dtos.response.MailResponse;
@@ -18,7 +19,7 @@ public class InboxServiceImpl implements InboxService {
 
     @Override
     public MailResponse save(MailRequest request) {
-        request.setType("INBOX");
+        request.setType(MailType.INBOX);
         return Mapper.map(inboxRepo.save(Mapper.map(request)));
     }
 

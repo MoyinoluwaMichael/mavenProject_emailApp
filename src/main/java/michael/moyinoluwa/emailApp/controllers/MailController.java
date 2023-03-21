@@ -46,18 +46,19 @@ public class MailController {
     }
 
     @GetMapping("/findSentMails/{profileId}")
-    public ResponseEntity<?> findSentMailsByProfileId(@PathVariable String profileId) {
-        try{
-            return new ResponseEntity<>(sentMails.findAllByProfileId(profileId), HttpStatus.FOUND);
-        }catch (InstanceNotFoundException e){ return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);}
+    public ResponseEntity<?> findSentMailsByProfileId(@PathVariable String profileId) throws InstanceNotFoundException {
+//        try{
+            return ResponseEntity.ok(sentMails.findAllByProfileId(profileId));
+//            return new ResponseEntity<>(sentMails.findAllByProfileId(profileId), HttpStatus.FOUND);
+//        }catch (InstanceNotFoundException e){ return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);}
     }
 
     @DeleteMapping("/deleteMailFromSentMails/{profileId}/{id}")
-    public ResponseEntity<?> deleteMailFromSentMailsByProfileIdAndId(@PathVariable String profileId, @PathVariable String id) {
-        try{
+    public ResponseEntity<?> deleteMailFromSentMailsByProfileIdAndId(@PathVariable String profileId, @PathVariable String id) throws InstanceNotFoundException {
+//        try{
             trash.save(Mapper.map(sentMails.findByProfileIdAndId(profileId, id)));
             return new ResponseEntity<> (sentMails.deleteByProfileIdAndId(profileId, id), HttpStatus.ACCEPTED);
-        }catch (InstanceNotFoundException e){return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);}
+//        }catch (InstanceNotFoundException e){return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);}
     }
 
 
@@ -67,17 +68,17 @@ public class MailController {
     }
 
     @GetMapping("/findInboxByProfileIdAndId/{profileId}/{id}")
-    public ResponseEntity<?> findInboxByProfileIdAndId(@PathVariable String profileId, @PathVariable String id){
-        try{
+    public ResponseEntity<?> findInboxByProfileIdAndId(@PathVariable String profileId, @PathVariable String id) throws InstanceNotFoundException {
+//        try{
             return new ResponseEntity<>(inbox.findByProfileIdAndId(profileId, id), HttpStatus.FOUND);
-        }catch (InstanceNotFoundException e){return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);}
+//        }catch (InstanceNotFoundException e){return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);}
     }
 
     @GetMapping("/findInbox/{profileId}")
-    public ResponseEntity<?> findInboxByProfileId(@PathVariable String profileId) {
-        try{
+    public ResponseEntity<?> findInboxByProfileId(@PathVariable String profileId) throws InstanceNotFoundException {
+//        try{
             return new ResponseEntity<>(inbox.findAllByProfileId(profileId), HttpStatus.FOUND);
-        }catch (InstanceNotFoundException e){ return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);}
+//        }catch (InstanceNotFoundException e){ return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);}
     }
 
     @DeleteMapping("/deleteMailFromInbox/{profileId}/{id}")
@@ -109,23 +110,23 @@ public class MailController {
 
     @DeleteMapping("/deleteMailFromTrash/{profileId}/{id}")
     public ResponseEntity<?> deleteMailFromTrashByProfileIdAndId(@PathVariable String profileId, @PathVariable String id) throws InstanceNotFoundException {
-        try{
+//        try{
             return new ResponseEntity<> (trash.deleteByProfileIdAndId(profileId, id), HttpStatus.ACCEPTED);
-        }catch (InstanceNotFoundException e){return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);}
+//        }catch (InstanceNotFoundException e){return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);}
     }
 
     @PostMapping("/sendMail")
-    public ResponseEntity<?> sendMail(@RequestBody MailRequest mailRequest) {
+    public ResponseEntity<?> sendMail(@RequestBody MailRequest mailRequest) throws InstanceNotFoundException {
         RegisterResponse sender, recipient;
-        try {
+//        try {
             sender = profileService.findByUsername(mailRequest.getSender());
             recipient = profileService.findByUsername(mailRequest.getRecipient());
-        } catch (InstanceNotFoundException e) {return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);}
+//        } catch (InstanceNotFoundException e) {return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);}
         MailResponse sentMail = sentMails.save(mailRequest);
         mailRequest.setProfileId(recipient.getId());
         inbox.save(mailRequest);
-        try {
+//        try {
             return new ResponseEntity<>(sentMails.findByProfileIdAndId(sender.getId(), sentMail.getId()), HttpStatus.CREATED);
-        } catch (InstanceNotFoundException e) {return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);}
+//        } catch (InstanceNotFoundException e) {return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);}
     }
 }

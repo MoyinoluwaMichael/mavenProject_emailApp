@@ -1,5 +1,7 @@
 package michael.moyinoluwa.emailApp.services.profileService;
 
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import michael.moyinoluwa.emailApp.data.models.Profile;
 import michael.moyinoluwa.emailApp.data.repositories.profileRepo.ProfileRepo;
 import michael.moyinoluwa.emailApp.dtos.request.RegisterRequest;
@@ -14,9 +16,10 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ProfileServiceImp implements ProfileService {
-    @Autowired
-    private ProfileRepo profileRepo;
+//    @Autowired
+    private final ProfileRepo profileRepo;
 
     @Override
     public RegisterResponse register(RegisterRequest request) {
@@ -73,7 +76,7 @@ public class ProfileServiceImp implements ProfileService {
     }
 
     private void validateUsername(String username) {
-        if (profileRepo.findByUsername(username) != null) {
+        if (profileRepo.existsByUsername(username)) {
             throw new DuplicateRequestException("Username already exist!");
         }
     }
@@ -106,9 +109,13 @@ public class ProfileServiceImp implements ProfileService {
     @Override
     public String editUsername(String oldUsername, String newUsername) throws InstanceNotFoundException {
         newUsername = addBrandToUsername(newUsername);
-        findByUsername(oldUsername);
+//        findByUsername(oldUsername);
         validateUsername(newUsername);
-        profileRepo.editUsername(oldUsername, newUsername);
+
+        Profile profile = profileRepo.findByUsername(oldUsername);
+        profile.setUsername(newUsername);
+        profileRepo.save(profile);
+//        profileRepo.editUsername(oldUsername, newUsername);
         return "Username has been updated successfully!";
     }
 

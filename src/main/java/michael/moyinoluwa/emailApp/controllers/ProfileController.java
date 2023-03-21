@@ -29,7 +29,7 @@ public class ProfileController {
         try {
             return new ResponseEntity<>(profileService.register(request), HttpStatus.CREATED);
         } catch (IllegalArgumentException | DuplicateRequestException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

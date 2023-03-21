@@ -1,6 +1,7 @@
 package michael.moyinoluwa.emailApp.dtos.request;
 
 import lombok.Data;
+import michael.moyinoluwa.emailApp.data.models.MailType;
 
 @Data
 public class MailRequest {
@@ -9,5 +10,5 @@ public class MailRequest {
     private String profileId;
     private String sender;
     private String recipient;
-    private String type;
+    private MailType type;
 }
